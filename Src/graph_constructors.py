@@ -1,7 +1,7 @@
 import plotly.express as px
 from utils import nutricolors, hover_text_item_chart, hover_text_ranking_chart
 
-def construct_item_graph(data, food):
+def construct_item_graph(data, food, highlight):
     title_text = f'The proportion of nutrients in {food} relative to the daily intake recommendation'
 
     fig = px.bar(
@@ -22,7 +22,9 @@ def construct_item_graph(data, food):
         hovertemplate=hover_text_item_chart,
         textposition='outside'
     ),
-    fig.add_vline(x=100, line_width=3, line_color="grey")
+
+    if len(highlight) > 0:
+        fig.add_vline(x=100, line_width=3, line_color="grey")
 
     return fig
 

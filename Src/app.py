@@ -35,12 +35,23 @@ app.layout = dbc.Container([
                 id='food-item-selection',
                 clearable=False
             )
-        ], width=3),
+        ], width=4),
         dbc.Col([
             html.Label('Amount (g)', htmlFor='amount-selection'),
             dcc.Input(id='amount-selection', type='number', min=1, max=1000, step=1, value=100)
         ], width=1),
         dbc.Col([
+            dcc.Checklist(
+                options=['Highlight 100 %'],
+                value=[],
+                id='highlight-100',
+                inputStyle={'margin-right': '10px'}
+            )
+        ], width=3)
+    ]),
+
+    dbc.Row([
+       dbc.Col([
             html.Label('Show nutrients', htmlFor='nutrients-to-show-selection'),
             dcc.Dropdown(
                 list(df_help.Nutrient.unique()),
@@ -48,13 +59,13 @@ app.layout = dbc.Container([
                 id='nutrients-to-show-selection',
                 multi=True
             )
-        ], width=4),
+        ], width=8),
         dbc.Col([
             html.Div(
                 'Note: This is a reference guide only. The recommended values depend on many personal factors like age and gender.'
             )
         ], width=4, style={'padding-left': '40px'})
-    ]),
+    ], style={'padding-top': '20px'}),
 
     dbc.Row([
         dbc.Col([
@@ -121,12 +132,13 @@ app.layout = dbc.Container([
     Output(component_id='item-bar-chart', component_property='figure'),
     Input(component_id='food-item-selection', component_property='value'),
     Input(component_id='amount-selection', component_property='value'),
-    Input(component_id='nutrients-to-show-selection', component_property='value')
+    Input(component_id='nutrients-to-show-selection', component_property='value'),
+    Input(component_id='highlight-100', component_property='value')
 )
-def update_item_graph(food, amount, nutrients):
+def update_item_graph(food, amount, nutrients, highlight):
     
     data = filter_data_for_item_graph(df, df_help, food, amount, nutrients)
-    fig = construct_item_graph(data, food)
+    fig = construct_item_graph(data, food, highlight)
     
     return fig
 
