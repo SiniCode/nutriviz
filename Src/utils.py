@@ -1,8 +1,10 @@
-nutricolors = ['gold', 'orange', 'coral', 'indianred', 'lightcoral',
-               'palevioletred', 'deeppink', 'mediumvioletred', 'purple', 'indigo',
-               'midnightblue', 'steelblue', 'skyblue', 'turquoise', 'springgreen',
-               'yellowgreen', 'olivedrab', 'darkolivegreen', 'darkkhaki', 'goldenrod',
-               'peru', 'sienna', 'saddlebrown', 'maroon', 'firebrick']
+nutricolors = [
+    'gold', 'orange', 'indianred', 'lightcoral', 'palevioletred',
+    'deeppink', 'mediumvioletred', 'purple', 'indigo', 'midnightblue',
+    'steelblue', 'deepskyblue', 'skyblue', 'turquoise', 'springgreen',
+    'yellowgreen', 'darkseagreen', 'cadetblue', 'darkslategray', 'darkkhaki',
+    'goldenrod', 'peru', 'sienna', 'maroon', 'firebrick'
+]
 
 hover_text_item_chart = '<b>%{customdata[2]}</b><br>The amount of %{y} in %{customdata[3]} g of this product is %{customdata[0]} %{customdata[1]}, which is %{x} % of the daily intake recommendation.'
 
