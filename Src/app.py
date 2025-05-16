@@ -19,7 +19,7 @@ df = pd.read_csv(data_file_path, sep=';')
 df_help = pd.read_csv(help_file_path, sep=';')
 
 # Initialize the app - incorporate a Dash Bootstrap theme
-external_stylesheets = [dbc.themes.LUMEN]
+external_stylesheets = [dbc.themes.FLATLY]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 # App layout
@@ -133,7 +133,7 @@ app.layout = dbc.Container([
     ]),
 
     stacked_graph_heading_row(),
-    
+
     dbc.Row([
         dbc.Col([
             html.Label('Select food items', htmlFor='food-item-selection'),

@@ -25,7 +25,7 @@ def construct_item_graph(data, food, highlight):
     ),
 
     if len(highlight) > 0:
-        fig.add_vline(x=100, line_width=3, line_color="grey")
+        fig.add_vline(x=100, line_width=3, line_color='darkslategrey')
 
     return fig
 
