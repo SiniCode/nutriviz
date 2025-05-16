@@ -60,18 +60,24 @@ app.layout = dbc.Container([
                 id='nutrients-to-show-selection',
                 multi=True
             )
-        ], width=8),
+        ], width=7),
+        dbc.Col([
+            html.Div()
+        ], width=1),
         dbc.Col([
             html.Div(
                 'Note: This is a reference guide only. The recommended values depend on many personal factors like age and gender.'
             )
-        ], width=4, style={'padding-left': '40px'})
+        ], width=4)
     ], style={'padding-top': '20px'}),
 
     dbc.Row([
         dbc.Col([
             dcc.Graph(figure={}, id='item-bar-chart')
-        ], width=8),
+        ], width=7),
+        dbc.Col([
+            html.Div()
+        ], width=1),
         dbc.Col([
             dash_table.DataTable(
                 id='recommendation-table',
@@ -79,7 +85,7 @@ app.layout = dbc.Container([
                 columns=[{'name': i, 'id': i} for i in ['Nutrient', 'Recommended daily intake', 'Unit']],
                 style_table={'overflowX': 'auto'}
             )
-        ], width=4, style={'padding-left': '40px'})
+        ], width=4)
     ]),
 
     ranking_graph_heading_row(),
@@ -115,7 +121,7 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row(html.Label('Search with keyword', htmlFor='keyword-input')),
             dbc.Row(dcc.Input(id='keyword-input', type='text', value=''))
-        ], width=1),
+        ], width=2),
         dbc.Col([
             dbc.Row(html.Label('Show', htmlFor='show-selection')),
             dbc.Row(dcc.Input(id='show-selection', type='number', min=1, max=50, step=1, value=10))
@@ -125,7 +131,7 @@ app.layout = dbc.Container([
                        value='Maximize intake',
                        inline=False,
                        id='minmax-radio')
-        ], width=3)
+        ], width=2)
     ]),
 
     dbc.Row([
@@ -143,7 +149,7 @@ app.layout = dbc.Container([
                 id='food-dropdown',
                 placeholder="Select food items"     
             )
-        ], width=4),
+        ], width=11),
     ]),
 
     dbc.Row([
@@ -203,7 +209,7 @@ def display_food_inputs(selected_foods, stored_amounts):
 
     return [
         html.Div([
-            html.Label(f"{food} amount (grams):"),
+            html.Label(f'{food} amount (g):', style={'margin': '10px'}),
             dcc.Input(
                 id={'type': 'food-amount', 'index': food},
                 type='number',

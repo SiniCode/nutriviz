@@ -14,7 +14,7 @@ def filter_data_for_item_graph(df, df_help, food, amount, nutrients):
 
     data = pd.DataFrame({
         'Nutrient': list(df_help['Nutrient']),
-        'Percent of the recommended daily intake (%)': percentages.iloc[0,:],
+        'Percent of the RDI (%)': percentages.iloc[0,:],
         'Nutriamount': amounts.iloc[0, :],
         'Unit': list(df_help['Unit']),
         'Food': [f'{food}']*25,

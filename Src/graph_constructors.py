@@ -3,11 +3,11 @@ from utils import nutricolors, hover_text_item_chart, hover_text_ranking_chart
 
 
 def construct_item_graph(data, food, highlight):
-    title_text = f'The proportion of nutrients in {food} relative to the daily intake recommendation'
+    title_text = f'The proportion of nutrients in {food} relative to the Reference Daily Intake'
 
     fig = px.bar(
         data_frame=data,
-        x='Percent of the recommended daily intake (%)',
+        x='Percent of the RDI (%)',
         y='Nutrient',
         custom_data=['Nutriamount', 'Unit', 'Food', 'Foodamount'],
         title=title_text,
@@ -62,8 +62,9 @@ def construct_stacked_graph(data):
         color='Food',
         color_discrete_sequence=nutricolors,
         orientation='h',
-        title='The total proportion of nutrients in the selected products relative to Reference Daily Intake',
-        height=860
+        title='The total proportion of nutrients in the selected products relative to the Reference Daily Intake',
+        height=860,
+        text_auto='.1f'
     )
 
     fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=data.Nutrient.unique()[::-1]))

@@ -21,11 +21,11 @@ def item_graph_heading_row():
         ], width=8),
         dbc.Col([
             html.Label(
-                'Daily intake recommendations',
+                'Reference Daily Intake (RDI)',
                 htmlFor='recommendation-table',
                 className='text-primary fs-2'
             )
-        ], width=4, style={'padding-left': '40px'})
+        ], width=4)
     ], style={'margin-bottom': '20px'})
 
     return row
