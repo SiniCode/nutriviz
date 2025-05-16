@@ -1,6 +1,7 @@
 import plotly.express as px
 from utils import nutricolors, hover_text_item_chart, hover_text_ranking_chart
 
+
 def construct_item_graph(data, food, highlight):
     title_text = f'The proportion of nutrients in {food} relative to the daily intake recommendation'
 
@@ -51,4 +52,20 @@ def construct_ranking_graph(data, nutrient, unit):
         textposition='outside'
     )
     
+    return fig
+
+def construct_stacked_graph(data):
+    fig = px.bar(
+        data,
+        x='Percent of the RDI (%)',
+        y='Nutrient',
+        color='Food',
+        color_discrete_sequence=nutricolors,
+        orientation='h',
+        title='The total proportion of nutrients in the selected products relative to Reference Daily Intake',
+        height=860
+    )
+
+    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=data.Nutrient.unique()[::-1]))
+
     return fig

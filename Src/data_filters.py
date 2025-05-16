@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def filter_data_for_item_graph(df, df_help, food, amount, nutrients):
     if amount == None:
         amount = 0
@@ -48,3 +49,16 @@ def filter_data_for_ranking_graph(df, nutrient, category, diet, keyword, show, m
     data['Unit'] = [unit]*data_length
 
     return data
+
+def filter_data_for_stacked_graph(df, df_help, selected_foods, stored_amounts):
+    data = pd.DataFrame()
+
+    for food in selected_foods:
+        item = df[df.Food == food]
+        item = item.iloc[:, [1] + list(range(3, 28))]
+        item.iloc[:, 1:] = item.iloc[:, 1:] / list(df_help['Recommended daily intake']) * 100 * (stored_amounts.get(food, 0)/100)
+        data = pd.concat([data, item])
+
+    data_long = data.melt(id_vars=['Food'], var_name='Nutrient', value_name='Percent of the RDI (%)')
+
+    return data_long

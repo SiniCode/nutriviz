@@ -15,7 +15,7 @@ def item_graph_heading_row():
     row = dbc.Row([
         dbc.Col([
             html.Div(
-                'Total nutrients',
+                'Study the nutrient content of a product',
                 className='text-primary text-left fs-2'
             )
         ], width=8),
@@ -34,6 +34,16 @@ def ranking_graph_heading_row():
     row = dbc.Row([
         html.Div(
             'Rank food items',
+            className='text-primary text-left fs-2'
+        )
+    ], style={'margin-top': '60px', 'margin-bottom': '20px'})
+
+    return row
+
+def stacked_graph_heading_row():
+    row = dbc.Row([
+        html.Div(
+            'Construct a meal',
             className='text-primary text-left fs-2'
         )
     ], style={'margin-top': '60px', 'margin-bottom': '20px'})

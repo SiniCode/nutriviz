@@ -1,15 +1,16 @@
 # Import packages
 import os
+import plotly.express as px
 
-from dash import Dash, html, dash_table, dcc, callback, Output, Input
+from dash import Dash, html, dash_table, dcc, callback, Output, Input, State, ALL
 
 import pandas as pd
 import dash_bootstrap_components as dbc
 
-from layout_components import title_component, item_graph_heading_row, ranking_graph_heading_row, data_source_row
+from layout_components import title_component, item_graph_heading_row, ranking_graph_heading_row, stacked_graph_heading_row, data_source_row
 from utils import get_unit
-from data_filters import filter_data_for_item_graph, filter_data_for_ranking_graph
-from graph_constructors import construct_item_graph, construct_ranking_graph
+from data_filters import filter_data_for_item_graph, filter_data_for_ranking_graph, filter_data_for_stacked_graph
+from graph_constructors import construct_item_graph, construct_ranking_graph, construct_stacked_graph
 
 # Incorporate data
 data_file_path = os.path.join('Data', 'Fineli_food_data_processed.csv')
@@ -131,6 +132,29 @@ app.layout = dbc.Container([
         dcc.Graph(figure={}, id='ranking-bar-chart')
     ]),
 
+    stacked_graph_heading_row(),
+    
+    dbc.Row([
+        dbc.Col([
+            html.Label('Select food items', htmlFor='food-item-selection'),
+            dcc.Dropdown(
+                options=list(df.Food.unique()),
+                multi=True,
+                id='food-dropdown',
+                placeholder="Select food items"     
+            )
+        ], width=4),
+    ]),
+
+    dbc.Row([
+        dcc.Store(id='food-amounts-store', data={}),
+        html.Div(id='food-inputs-container')
+    ]),
+
+    dbc.Row([
+        dcc.Graph(id='nutrient-stacked-chart')
+    ]),
+
     data_source_row()
 
 ], fluid=True, style={'padding': '60px'})
@@ -165,6 +189,60 @@ def update_ranking_graph(nutrient, category, diet, keyword, show, minmax):
     unit = get_unit(df=df_help, nutrient=nutrient)
     data = filter_data_for_ranking_graph(df, nutrient, category, diet, keyword, show, minmax, unit)
     fig = construct_ranking_graph(data, nutrient, unit)
+
+    return fig
+
+@app.callback(
+    Output('food-inputs-container', 'children'),
+    Input('food-dropdown', 'value'),
+    State('food-amounts-store', 'data')
+)
+def display_food_inputs(selected_foods, stored_amounts):
+    if not selected_foods:
+        return []
+
+    return [
+        html.Div([
+            html.Label(f"{food} amount (grams):"),
+            dcc.Input(
+                id={'type': 'food-amount', 'index': food},
+                type='number',
+                value=stored_amounts.get(food, 100),
+                min=0,
+                max=1000,
+                step=1
+            )
+        ]) for food in selected_foods
+    ]
+
+@app.callback(
+    Output('food-amounts-store', 'data'),
+    Input({'type': 'food-amount', 'index': ALL}, 'value'),
+    State('food-dropdown', 'value'),
+    State('food-amounts-store', 'data')
+)
+def update_store(amounts, selected_foods, stored_amounts):
+    if not selected_foods:
+        return {}
+
+    for food, amount in zip(selected_foods, amounts):
+        if amount == None:
+            amount = 0
+        stored_amounts[food] = amount
+
+    return stored_amounts
+
+@app.callback(
+    Output('nutrient-stacked-chart', 'figure'),
+    Input('food-dropdown', 'value'),
+    Input('food-amounts-store', 'data')
+)
+def update_chart(selected_foods, stored_amounts):
+    if not selected_foods or not stored_amounts:
+        return px.bar(title="Select food items and enter amounts to see the chart.")
+
+    data = filter_data_for_stacked_graph(df, df_help, selected_foods, stored_amounts)
+    fig = construct_stacked_graph(data)
 
     return fig
 
