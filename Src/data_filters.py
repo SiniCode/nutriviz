@@ -24,7 +24,7 @@ def filter_data_for_item_graph(df, df_help, food, amount, nutrients):
 
     return data
 
-def filter_data_for_ranking_graph(df, nutrient, category, keyword, show, minmax, unit):
+def filter_data_for_ranking_graph(df, nutrient, category, diet, keyword, show, minmax, unit):
     if show == None:
         show = 0
     
@@ -34,6 +34,9 @@ def filter_data_for_ranking_graph(df, nutrient, category, keyword, show, minmax,
         selected_items = df[df.Category == category]
     else:
         selected_items = df
+
+    if diet != 'None':
+        selected_items = selected_items[selected_items[diet] == 1]
 
     if len(keyword) > 0:
         selected_items = selected_items[selected_items['Food'].str.contains(keyword.upper())]

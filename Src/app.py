@@ -101,7 +101,16 @@ app.layout = dbc.Container([
                 id='category-selection',
                 clearable=False
             )
-        ], width=3),
+        ], width=2),
+        dbc.Col([
+            html.Label('Special diet', htmlFor='diet-selection'),
+            dcc.Dropdown(
+                ['None'] + list(df.columns)[28:],
+                'None',
+                id='diet-selection',
+                clearable=False
+            )
+        ], width=2),
         dbc.Col([
             dbc.Row(html.Label('Search with keyword', htmlFor='keyword-input')),
             dbc.Row(dcc.Input(id='keyword-input', type='text', value=''))
@@ -146,14 +155,15 @@ def update_item_graph(food, amount, nutrients, highlight):
     Output(component_id='ranking-bar-chart', component_property='figure'),
     Input(component_id='nutri-selection', component_property='value'),
     Input(component_id='category-selection', component_property='value'),
+    Input(component_id='diet-selection', component_property='value'),
     Input(component_id='keyword-input', component_property='value'),
     Input(component_id='show-selection', component_property='value'),
     Input(component_id='minmax-radio', component_property='value')
 )
-def update_ranking_graph(nutrient, category, keyword, show, minmax):
+def update_ranking_graph(nutrient, category, diet, keyword, show, minmax):
 
     unit = get_unit(df=df_help, nutrient=nutrient)
-    data = filter_data_for_ranking_graph(df, nutrient, category, keyword, show, minmax, unit)
+    data = filter_data_for_ranking_graph(df, nutrient, category, diet, keyword, show, minmax, unit)
     fig = construct_ranking_graph(data, nutrient, unit)
 
     return fig
